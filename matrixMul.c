@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
+#include <unistd.h>
 
 void MatrixMulOnHost(float* M, float* N, float* P, int width) {
   for(int i = 0; i < width; ++i){
@@ -16,7 +18,7 @@ void MatrixMulOnHost(float* M, float* N, float* P, int width) {
 }
 
 int main() {
-  int size = 2;
+  int size = 1000;
 
   float* x = malloc(sizeof(float) * size * size);
   float* y = malloc(sizeof(float) * size * size);
@@ -28,13 +30,16 @@ int main() {
       y[i * size + j] = 1;
     }
   }
-
+  clock_t a = clock();
   MatrixMulOnHost(x, y, z, size);
+  clock_t b = clock() - a;
+  //printf("time: %f ", (float) b/CLOCKS_PER_SEC);
   for (int i = 0; i < size; i++) {
     for (int j = 0; j < size; j++) {
-      printf("%f ", z[i * size + j]); // x[i][j]
+      printf("%f ", z[i * size + j]); 
     }
   }
+  printf("time: %f ", (float) b/CLOCKS_PER_SEC);
   for (int i = 0; i < size; i++) {
     for (int j = 0; j < size; j++) {
       if (z[i * size + j] != size) {
