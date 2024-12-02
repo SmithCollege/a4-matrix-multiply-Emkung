@@ -1,9 +1,9 @@
-#include <stdlib.h>
+#include <cublas_v2.h>
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
 
-#define TILE_WIDTH 10
+#define TILE_WIDTH 2
 __global__ void MatrixMulCUDA(float* M, float* N, float* P, int Width) {
      int Row = blockIdx.y * blockDim.y + threadIdx.y;
      int Col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -18,7 +18,7 @@ __global__ void MatrixMulCUDA(float* M, float* N, float* P, int Width) {
 
 int main() {
     float *M, *N, *P;
-    int Width = TILE_WIDTH*TILE_WIDTH;
+    int Width = 1000;
     cudaMallocManaged(&M, sizeof(float) * Width*Width);
     cudaMallocManaged(&N, sizeof(float) * Width*Width);
     cudaMallocManaged(&P, sizeof(float) * Width*Width);
